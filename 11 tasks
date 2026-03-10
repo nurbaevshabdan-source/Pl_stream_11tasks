@@ -1,0 +1,148 @@
+import java.util.*;
+import java.util.stream.Collectors;
+
+public class StreamTasks {
+    
+    public static void main(String[] args) {
+        // Creating lists for the tasks
+        List<Integer> numbers = Arrays.asList(5, 2, 8, 1, 9, 3, 7, 4, 6, 10, 5, 2, 8);
+        List<String> words = Arrays.asList("cat", "dog", "apple", "cat", "bird", "dog", "fish", "elephant");
+        
+        // Creating a list of students
+        List<Student> students = new ArrayList<>();
+        students.add(new Student("John", "A1", 4.5));
+        students.add(new Student("Emma", "B2", 3.8));
+        students.add(new Student("Mike", "A1", 4.2));
+        students.add(new Student("Sophia", "C1", 4.8));
+        students.add(new Student("David", "B2", 3.5));
+        students.add(new Student("Lisa", "A1", 4.0));
+        students.add(new Student("Tom", "C1", 3.2));
+        students.add(new Student("Anna", "A1", 4.7));
+        students.add(new Student("Alex", "B2", 3.9));
+        students.add(new Student("Maria", "A1", 4.3));
+        students.add(new Student("Chris", "C1", 3.6));
+        students.add(new Student("Kate", "A1", 4.1));
+        
+        // Task 1: Filter even numbers
+        System.out.println("=== Task 1: Even numbers ===");
+        List<Integer> evenNumbers = numbers.stream()
+            .filter(n -> n % 2 == 0)
+            .collect(Collectors.toList());
+        System.out.println("All numbers: " + numbers);
+        System.out.println("Even numbers only: " + evenNumbers);
+        System.out.println();
+        
+        // Task 2: Convert strings to uppercase
+        System.out.println("=== Task 2: Uppercase strings ===");
+        List<String> upperWords = words.stream()
+            .map(word -> word.toUpperCase())
+            .collect(Collectors.toList());
+        System.out.println("Before: " + words);
+        System.out.println("After: " + upperWords);
+        System.out.println();
+        
+        // Task 3: Count strings starting with specific letter
+        System.out.println("=== Task 3: Count words starting with 'c' ===");
+        long countC = words.stream()
+            .filter(word -> word.startsWith("c"))
+            .count();
+        System.out.println("Words: " + words);
+        System.out.println("Words starting with 'c': " + countC);
+        System.out.println();
+        
+        // Task 4: Sort numbers in descending order
+        System.out.println("=== Task 4: Numbers in descending order ===");
+        List<Integer> sortedDesc = numbers.stream()
+            .sorted((a, b) -> b - a)
+            .collect(Collectors.toList());
+        System.out.println("Original: " + numbers);
+        System.out.println("Descending: " + sortedDesc);
+        System.out.println();
+        
+        // Task 5: Find max and min numbers
+        System.out.println("=== Task 5: Max and min numbers ===");
+        Optional<Integer> max = numbers.stream()
+            .max(Integer::compareTo);
+        Optional<Integer> min = numbers.stream()
+            .min(Integer::compareTo);
+        System.out.println("Numbers: " + numbers);
+        System.out.println("Maximum: " + max.get());
+        System.out.println("Minimum: " + min.get());
+        System.out.println();
+        
+        // Task 6: Remove duplicates
+        System.out.println("=== Task 6: Remove duplicates ===");
+        List<Integer> uniqueNumbers = numbers.stream()
+            .distinct()
+            .collect(Collectors.toList());
+        System.out.println("Original: " + numbers);
+        System.out.println("Without duplicates: " + uniqueNumbers);
+        System.out.println();
+        
+        // Task 7: Concatenate strings with comma
+        System.out.println("=== Task 7: Join strings with comma ===");
+        String joined = words.stream()
+            .distinct()
+            .collect(Collectors.joining(", "));
+        System.out.println("Words: " + words);
+        System.out.println("Joined: " + joined);
+        System.out.println();
+        
+        // Task 8: Group students by group
+        System.out.println("=== Task 8: Group students by group ===");
+        Map<String, List<Student>> byGroup = students.stream()
+            .collect(Collectors.groupingBy(s -> s.group));
+        
+        // Printing the groups
+        for (String group : byGroup.keySet()) {
+            System.out.println("Group " + group + ":");
+            for (Student s : byGroup.get(group)) {
+                System.out.println("  - " + s.name + " (GPA: " + s.gpa + ")");
+            }
+        }
+        System.out.println();
+        
+        // Task 9: Calculate average GPA of all students
+        System.out.println("=== Task 9: Average GPA of all students ===");
+        OptionalDouble avgGpa = students.stream()
+            .mapToDouble(s -> s.gpa)
+            .average();
+        System.out.println("Average GPA: " + avgGpa.getAsDouble());
+        System.out.println();
+        
+        // Task 10: Find first 3 students with GPA > 3.8
+        System.out.println("=== Task 10: First 3 students with GPA > 3.8 ===");
+        List<Student> topGpaStudents = students.stream()
+            .filter(s -> s.gpa > 3.8)
+            .limit(3)
+            .collect(Collectors.toList());
+        
+        System.out.println("Students with GPA > 3.8 (first 3):");
+        for (Student s : topGpaStudents) {
+            System.out.println("  - " + s.name + " (GPA: " + s.gpa + ", Group: " + s.group + ")");
+        }
+        System.out.println();
+        
+        // Task 11: Count students with GPA > 3.5
+        System.out.println("=== Task 11: Count students with GPA > 3.5 ===");
+        long countGpaAbove35 = students.stream()
+            .filter(s -> s.gpa > 3.5)
+            .count();
+        System.out.println("Students with GPA > 3.5: " + countGpaAbove35);
+        System.out.println();
+    }
+}
+
+// Student class
+class Student {
+    String name;
+    String group;
+    double gpa;
+    
+    // Constructor
+    public Student(String name, String group, double gpa) {
+        this.name = name;
+        this.group = group;
+        this.gpa = gpa;
+    }
+}
